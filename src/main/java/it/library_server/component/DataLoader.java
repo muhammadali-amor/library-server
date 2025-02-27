@@ -36,7 +36,6 @@ public class DataLoader implements CommandLineRunner {
                     User.builder()
                             .name("Admin")
                             .surname("Adminov")
-                            .phoneNumber("987654321")
                             .email("book@gmail.com")
                             .password(passwordEncoder.encode("root1234"))
                             .roles(new HashSet<>(roleRepository.findAll()))

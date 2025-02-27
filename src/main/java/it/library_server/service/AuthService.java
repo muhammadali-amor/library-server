@@ -50,10 +50,10 @@ public class AuthService implements UserDetailsService {
 
     public HttpEntity<?> login(LoginDto request, AuthenticationManager authenticationManager) {
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getPhoneNumber(), request.getPassword())
+                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
-        User user = authRepository.findUserByPhoneNumber(request.getPhoneNumber()).orElseThrow(() -> new ResourceNotFoundException("getUser"));
-        ResToken resToken = new ResToken(generateToken(request.getPhoneNumber()));
+        User user = authRepository.findUserByPhoneNumber(request.getEmail()).orElseThrow(() -> new ResourceNotFoundException("getUser"));
+        ResToken resToken = new ResToken(generateToken(request.getEmail()));
         System.out.println(ResponseEntity.ok(getMal(user, resToken)));
         return ResponseEntity.ok(getMal(user, resToken));
     }
@@ -93,10 +93,8 @@ public class AuthService implements UserDetailsService {
                             .name(registerDto.getName())
                             .surname(registerDto.getSurname())
                             .email(registerDto.getEmail())
-                            .phoneNumber(registerDto.getPhoneNumber())
                             .password(passwordEncoder().encode(registerDto.getPassword()))
                             .roles(Collections.singleton(roleRepository.findById(2).orElseThrow(() -> new ResourceNotFoundException("getRole"))))
-                            .photoId(registerDto.getPhotoId())
                             .accountNonExpired(true)
                             .accountNonLocked(true)
                             .credentialsNonExpired(true)
@@ -104,7 +102,7 @@ public class AuthService implements UserDetailsService {
                             .build();
                     User save = authRepository.save(user);
                     LoginDto loginDto = LoginDto.builder()
-                            .phoneNumber(save.getPhoneNumber())
+                            .email(save.getEmail())
                             .password(registerDto.getPassword())
                             .build();
                     return login(loginDto, authenticationManager);
@@ -165,11 +163,6 @@ public class AuthService implements UserDetailsService {
                     getUser.setEmail(registerDto.getEmail());
                     authRepository.save(getUser);
                     return new ApiResponse<>("email taxrirlandi", true);
-                }
-                case "phoneNumber" -> {
-                    getUser.setPhoneNumber(registerDto.getPhoneNumber());
-                    authRepository.save(getUser);
-                    return new ApiResponse<>("tel raqam taxrirlandi", true);
                 }
                 case "password" -> {
                     getUser.setPassword(passwordEncoder().encode(registerDto.getPassword()));

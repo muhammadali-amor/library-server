@@ -12,7 +12,7 @@ import java.util.UUID;
 @Builder
 public class LoginDto {
     private UUID userId;
-    @NotBlank(message = "Telefon raqam bo'lishi shart")
-    private String phoneNumber;
+    @NotBlank(message = "Email bo'lishi shart")
+    private String email;
     private String password;
 }
