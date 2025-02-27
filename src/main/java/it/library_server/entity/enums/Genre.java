@@ -1,0 +1,5 @@
+package it.library_server.entity.enums;
+
+public enum Genre {
+    FANTASY, SCIENCE, MYSTERY, ADVENTURE, CRIME, THRILLER, HORROR, HISTORICAL, ROMANCE, DRAMA, BIOGRAPHY, PHILOSOPHY, POPULAR
+}
