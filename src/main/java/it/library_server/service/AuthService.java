@@ -40,8 +40,8 @@ public class AuthService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String phoneNumber) throws UsernameNotFoundException {
-        return (UserDetails) authRepository.findUserByPhoneNumber(phoneNumber).orElseThrow(() -> new UsernameNotFoundException("getUser"));
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return (UserDetails) authRepository.findUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException("getUser"));
     }
 
     public UserDetails getUserById(UUID id) {
@@ -52,7 +52,7 @@ public class AuthService implements UserDetailsService {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
-        User user = authRepository.findUserByPhoneNumber(request.getEmail()).orElseThrow(() -> new ResourceNotFoundException("getUser"));
+        User user = authRepository.findUserByEmail(request.getEmail()).orElseThrow(() -> new ResourceNotFoundException("getUser"));
         ResToken resToken = new ResToken(generateToken(request.getEmail()));
         System.out.println(ResponseEntity.ok(getMal(user, resToken)));
         return ResponseEntity.ok(getMal(user, resToken));
@@ -77,39 +77,35 @@ public class AuthService implements UserDetailsService {
         return new GetData(user, resToken);
     }
 
-    private String generateToken(String phoneNumber) {
-        User user = authRepository.findUserByPhoneNumber(phoneNumber).orElseThrow(() -> new UsernameNotFoundException("getUser"));
+    private String generateToken(String email) {
+        User user = authRepository.findUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException("getUser"));
         return jwtTokenProvider.generateAccessToken(user);
     }
 
 
     public HttpEntity<?> addUser(RegisterDto registerDto, AuthenticationManager authenticationManager) {
         try {
-            boolean existsUserByPhoneNumber = authRepository.existsUserByPhoneNumber(registerDto.getPhoneNumber());
             boolean userByEmail = authRepository.existsUserByEmail(registerDto.getEmail());
-            if (!existsUserByPhoneNumber) {
-                if (!userByEmail) {
-                    User user = User.builder()
-                            .name(registerDto.getName())
-                            .surname(registerDto.getSurname())
-                            .email(registerDto.getEmail())
-                            .password(passwordEncoder().encode(registerDto.getPassword()))
-                            .roles(Collections.singleton(roleRepository.findById(2).orElseThrow(() -> new ResourceNotFoundException("getRole"))))
-                            .accountNonExpired(true)
-                            .accountNonLocked(true)
-                            .credentialsNonExpired(true)
-                            .enabled(true)
-                            .build();
-                    User save = authRepository.save(user);
-                    LoginDto loginDto = LoginDto.builder()
-                            .email(save.getEmail())
-                            .password(registerDto.getPassword())
-                            .build();
-                    return login(loginDto, authenticationManager);
-                }
-                return ResponseEntity.ok(new ApiResponse<>("Afsuski bunday emaildan foydalanilgan😔", false));
+            if (!userByEmail) {
+                User user = User.builder()
+                        .name(registerDto.getName())
+                        .surname(registerDto.getSurname())
+                        .email(registerDto.getEmail())
+                        .password(passwordEncoder().encode(registerDto.getPassword()))
+                        .roles(Collections.singleton(roleRepository.findById(2).orElseThrow(() -> new ResourceNotFoundException("getRole"))))
+                        .accountNonExpired(true)
+                        .accountNonLocked(true)
+                        .credentialsNonExpired(true)
+                        .enabled(true)
+                        .build();
+                User save = authRepository.save(user);
+                LoginDto loginDto = LoginDto.builder()
+                        .email(save.getEmail())
+                        .password(registerDto.getPassword())
+                        .build();
+                return login(loginDto, authenticationManager);
             } else {
-                return ResponseEntity.ok(new ApiResponse<>("Afsuski bunday telefon raqamdan avval foydalanilgan😞", false));
+                return ResponseEntity.ok(new ApiResponse<>("Afsuski bunday emaildan foydalanilgan😔", false));
             }
         } catch (Exception e) {
             return ResponseEntity.ok(new ApiResponse<>("Xatolik", false));

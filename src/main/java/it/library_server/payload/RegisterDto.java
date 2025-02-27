@@ -16,7 +16,6 @@ public class RegisterDto {
     private UUID photoId;
     private String name;
     private String surname;
-    private String phoneNumber;
     private String email;
     private List<Role> roles;
     private Integer roleId;
