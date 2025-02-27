@@ -1,12 +1,10 @@
 package it.library_server.component;
 
-import ali.school_server.entity.About;
-import ali.school_server.entity.Role;
-import ali.school_server.entity.User;
-import ali.school_server.entity.enums.RoleName;
-import ali.school_server.repository.AboutRepository;
-import ali.school_server.repository.AuthRepository;
-import ali.school_server.repository.RoleRepository;
+import it.library_server.entity.Role;
+import it.library_server.entity.User;
+import it.library_server.entity.enums.RoleName;
+import it.library_server.repository.AuthRepository;
+import it.library_server.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -27,7 +25,6 @@ public class DataLoader implements CommandLineRunner {
     private final AuthRepository authRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
-    private final AboutRepository aboutRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -50,16 +47,5 @@ public class DataLoader implements CommandLineRunner {
                             .build()
             );
         }
-
-        About about = About.builder()
-                .title("School name")
-                .description("School description")
-                .photoId(UUID.randomUUID())
-                .build();
-        about.setName("School name");
-
-        aboutRepository.save(
-                about
-        );
     }
 }

@@ -1,6 +1,6 @@
 package it.library_server.security;
 
-import ali.school_server.repository.AuthRepository;
+import it.library_server.repository.AuthRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

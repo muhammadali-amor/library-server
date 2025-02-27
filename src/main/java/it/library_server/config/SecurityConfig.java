@@ -1,9 +1,9 @@
 package it.library_server.config;
 
 
-import ali.school_server.repository.RoleRepository;
-import ali.school_server.security.JwtTokenFilter;
-import ali.school_server.security.UserAuthenticationEntryPoint;
+import it.library_server.repository.RoleRepository;
+import it.library_server.security.JwtTokenFilter;
+import it.library_server.security.UserAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
