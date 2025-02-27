@@ -13,12 +13,12 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Books extends AbsNameEntity {
+public class Book extends AbsNameEntity {
     @Column(nullable = false)
     private String author;
 
     @Column(nullable = false)
-    private int publisher_year;
+    private int publisherYear;
 
     @Column(nullable = false)
     private String language;
