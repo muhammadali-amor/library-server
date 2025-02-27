@@ -24,7 +24,7 @@ import java.util.UUID;
 public abstract class AbsNameEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(nullable = false)
     private String name;

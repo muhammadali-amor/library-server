@@ -25,17 +25,10 @@ public class User extends AbsEntity implements UserDetails {
     private String surname;
 
     @Column(nullable = false, unique = true)
-    private String phoneNumber;
-
-    @Column(nullable = false, unique = true)
     private String email;
 
-//    @Column(nullable = false)
+    @Column(nullable = false)
     private String password;
-
-    private String description;
-
-    private UUID photoId;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
@@ -49,19 +42,6 @@ public class User extends AbsEntity implements UserDetails {
     private boolean credentialsNonExpired = true;
     private boolean enabled = true;
 
-    public User(String name, String surname, String phoneNumber, String email, String password, Set<Role> roles, boolean accountNonExpired, boolean accountNonLocked, boolean credentialsNonExpired, boolean enabled) {
-        this.name = name;
-        this.surname = surname;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
-        this.password = password;
-        this.roles = roles;
-        this.accountNonExpired = accountNonExpired;
-        this.accountNonLocked = accountNonLocked;
-        this.credentialsNonExpired = credentialsNonExpired;
-        this.enabled = enabled;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;
@@ -69,7 +49,7 @@ public class User extends AbsEntity implements UserDetails {
 
     @Override
     public String getUsername() {
-        return phoneNumber;
+        return email;
     }
 
     @Override
