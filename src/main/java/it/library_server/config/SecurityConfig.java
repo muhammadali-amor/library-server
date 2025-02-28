@@ -1,6 +1,7 @@
 package it.library_server.config;
 
 
+import it.library_server.entity.enums.RoleName;
 import it.library_server.repository.RoleRepository;
 import it.library_server.security.JwtTokenFilter;
 import it.library_server.security.UserAuthenticationEntryPoint;
@@ -80,8 +81,8 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.POST,"/api/about/**", "/api/comfortable/**", "/api/stories/**").hasAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.GET,"/api/about/**", "/api/comfortable/**", "/api/stories/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/book/**").hasAuthority(RoleName.ADMIN.name())
+                        .requestMatchers(HttpMethod.GET, "/api/about/**", "/api/comfortable/**", "/api/stories/**").permitAll()
                         .anyRequest().authenticated())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .build();
