@@ -1,11 +1,9 @@
 package it.library_server.entity;
 
-import it.library_server.entity.templates.AbsNameEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.*;
-import org.springframework.data.relational.core.sql.In;
-
-import java.util.UUID;
 
 @Entity
 @Getter
@@ -13,7 +11,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Reviews{
+public class Reviews {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,6 +25,8 @@ public class Reviews{
     private Book book;
 
     @Column(nullable = false)
+    @Min(1)//minimum beriladigan sharx ratingi
+    @Max(5)// maximum  beriladigan sharx ratingi
     private Integer rating;
 
     @Column(nullable = false)
