@@ -20,7 +20,7 @@ import java.util.UUID;
 @RequestMapping("/api/comment")
 public class ReviewsController implements ReviewsControllerImpl {
     private final ReviewsService reviewsService;
-
+    
 
     @Override
     @GetMapping("/{id}")
@@ -29,6 +29,7 @@ public class ReviewsController implements ReviewsControllerImpl {
         return ResponseEntity.ok(allComment);
     }
 
+    @Override
     @GetMapping("/rating/{id}")
     public HttpEntity<?> getAllReting(@PathVariable Long id) {
         double colculatorReting = reviewsService.getColculatorReting(id);
