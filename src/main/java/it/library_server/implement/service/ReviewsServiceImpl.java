@@ -1,8 +1,7 @@
 package it.library_server.implement.service;
 
-import it.library_server.entity.Reviews;
 import it.library_server.payload.ApiResponse;
-import it.library_server.payload.ReqReviews;
+import it.library_server.payload.req.ReqReviews;
 import it.library_server.payload.res.ResReviews;
 
 import java.util.List;

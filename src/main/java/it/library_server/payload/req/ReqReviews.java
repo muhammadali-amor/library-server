@@ -1,4 +1,4 @@
-package it.library_server.payload;
+package it.library_server.payload.req;
 
 public record ReqReviews(
         Integer rating,

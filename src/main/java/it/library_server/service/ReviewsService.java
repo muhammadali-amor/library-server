@@ -6,7 +6,7 @@ import it.library_server.entity.User;
 import it.library_server.exception.ResourceNotFoundException;
 import it.library_server.implement.service.ReviewsServiceImpl;
 import it.library_server.payload.ApiResponse;
-import it.library_server.payload.ReqReviews;
+import it.library_server.payload.req.ReqReviews;
 import it.library_server.payload.res.ResReviews;
 import it.library_server.repository.AuthRepository;
 import it.library_server.repository.BookRepository;
