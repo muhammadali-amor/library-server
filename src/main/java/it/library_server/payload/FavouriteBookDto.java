@@ -1,8 +1,11 @@
 package it.library_server.payload;
 
+import lombok.Builder;
+
 import java.util.UUID;
 
-public record FavouriteBooksDto(
+@Builder
+public record FavouriteBookDto(
    Long id,
    UUID userId,
    Long bookId

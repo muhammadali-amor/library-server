@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
     @Query("SELECT COUNT(b) > 0 FROM Book b WHERE LOWER(b.name) = LOWER(:name)")
-    boolean existsByNameIgnoreCase(@Param("title") String name);
+    boolean existsByNameIgnoreCase(@Param("name") String name);
 
     boolean existsById(Long id);
 }
