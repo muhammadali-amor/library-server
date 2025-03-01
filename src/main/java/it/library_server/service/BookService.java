@@ -74,7 +74,7 @@ public class BookService implements BookServiceImpl {
     @Override
     public ApiResponse<?> deleteBook(Long id) {
         try {
-            if (bookRepository.existsById(id)){
+            if (bookRepository.existsById(id)) {
                 bookRepository.deleteById(id);
                 logger.info("Book deleted successfully");
                 return new ApiResponse<>("Kitob o'chirildi.", true);

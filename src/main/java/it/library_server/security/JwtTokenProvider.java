@@ -18,16 +18,20 @@ public class JwtTokenProvider {
     @Value("${app.jwtSecretKey}")
     private String JWT_SECRET;
 
+    @Value("${app.jwtExpirationHours:2}") // 2 soat default
+    private int JWT_EXPIRATION_HOURS;
+
     public String generateAccessToken(User user) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(JWT_SECRET);
             return JWT.create()
                     .withSubject(user.getEmail())
                     .withClaim("email", user.getEmail())
+                    .withClaim("provider", user.getAuthProvider()) // OAuth yoki oddiy login
                     .withExpiresAt(genAccessExpirationDate())
                     .sign(algorithm);
         } catch (JWTCreationException exception) {
-            throw new JWTCreationException("Error while generating token", exception);
+            throw new RuntimeException("Error while generating token", exception);
         }
     }
 
@@ -39,11 +43,11 @@ public class JwtTokenProvider {
                     .verify(token)
                     .getSubject();
         } catch (JWTVerificationException exception) {
-            throw new JWTVerificationException("Error while validating token", exception);
+            return null; // Xatolik bo‘lsa, null qaytariladi
         }
     }
 
     private Instant genAccessExpirationDate() {
-        return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
+        return LocalDateTime.now().plusHours(JWT_EXPIRATION_HOURS).toInstant(ZoneOffset.UTC);
     }
 }

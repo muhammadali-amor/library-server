@@ -1,56 +1,59 @@
 package it.library_server.security;
 
+import it.library_server.entity.User;
 import it.library_server.repository.AuthRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Component
+@RequiredArgsConstructor
 public class JwtTokenFilter extends OncePerRequestFilter {
-    @Autowired
-    JwtTokenProvider tokenService;
-    @Autowired
-    AuthRepository userRepository;
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+
+    private final JwtTokenProvider jwtTokenProvider;
+    private final AuthRepository authRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        var token = this.recoverToken(request);
+        String token = recoverToken(request);
         if (token != null) {
-            var email = tokenService.validateToken(token);
-            var user = userRepository.findByEmail(email);
-            var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+            try {
+                String email = jwtTokenProvider.validateToken(token);
+
+                if (email != null) {
+                    Optional<User> userOptional = authRepository.findByEmail(email);
+
+                    if (userOptional.isPresent()) {
+                        UserDetails user = userOptional.get();
+                        UsernamePasswordAuthenticationToken authentication =
+                                new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+
+                        SecurityContextHolder.getContext().setAuthentication(authentication);
+                    }
+                }
+            } catch (Exception e) {
+                SecurityContextHolder.clearContext(); // Xatolik bo‘lsa, kontekstni tozalaymiz
+            }
         }
         filterChain.doFilter(request, response);
     }
 
     private String recoverToken(HttpServletRequest request) {
-        try {
-            String authHeader = request.getHeader("Authorization");
-            String tokenReal = authHeader.substring(7);
-            if (authHeader.startsWith("Bearer ") && !tokenReal.isEmpty()) {
-                return tokenReal;
-            }
-            return null;
-        } catch (NullPointerException e) {
-            return null;
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            return authHeader.substring(7);
         }
+        return null;
     }
-//    private String recoverToken(HttpServletRequest request) {
-//        var authHeader = request.getHeader("Authorization");
-//        if (authHeader == null)
-//            return null;
-//        return authHeader.replace("Bearer ", "");
-//    }
 }

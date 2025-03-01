@@ -39,6 +39,13 @@ public class AuthService implements UserDetailsService {
         return new BCryptPasswordEncoder();
     }
 
+
+
+
+
+
+
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return (UserDetails) authRepository.findUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException("getUser"));

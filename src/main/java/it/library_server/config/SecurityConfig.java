@@ -1,12 +1,10 @@
 package it.library_server.config;
 
-
 import it.library_server.entity.enums.RoleName;
 import it.library_server.repository.RoleRepository;
 import it.library_server.security.JwtTokenFilter;
 import it.library_server.security.UserAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
@@ -24,8 +22,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Arrays;
 import java.util.List;
@@ -35,10 +31,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    @Autowired
-    JwtTokenFilter securityFilter;
-
-
+    private final JwtTokenFilter securityFilter;
     private final UserAuthenticationEntryPoint userAuthenticationEntryPoint;
 
     @Bean
@@ -46,36 +39,25 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("http://localhost:5173"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("X-Requested-With", "Origin", "Content-Type", "Accept", "Token", "Authorization"));
-        configuration.setAllowedHeaders(Arrays.asList(
+        configuration.setAllowedHeaders(List.of(
                 HttpHeaders.AUTHORIZATION,
                 HttpHeaders.CONTENT_TYPE,
-                HttpHeaders.ACCEPT
-
+                HttpHeaders.ACCEPT,
+                "X-Requested-With",
+                "Origin",
+                "Token"
         ));
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
-
         return source;
     }
 
     @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("http://localhost:5173");
-            }
-        };
-    }
-
-
-    @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, RoleRepository roleRepository) throws Exception {
         return httpSecurity
-                .exceptionHandling((exception) -> exception.authenticationEntryPoint(userAuthenticationEntryPoint))
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(userAuthenticationEntryPoint))
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -83,7 +65,11 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/book/**").hasAuthority(RoleName.ADMIN.name())
                         .requestMatchers(HttpMethod.GET, "/api/about/**", "/api/comfortable/**", "/api/stories/**").permitAll()
-                        .anyRequest().authenticated())
+                        .anyRequest().authenticated()
+                )
+                .oauth2Login(oauth2 -> oauth2
+                        .defaultSuccessUrl("/api/auth/google/success", true)
+                )
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .build();
     }
