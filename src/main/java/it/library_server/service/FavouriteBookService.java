@@ -20,8 +20,8 @@ public class FavouriteBookService {
         if (existingFavourite.isPresent()) {
             FavouriteBook favouriteBook = existingFavourite.get();
             favouriteBookRepository.delete(favouriteBook);
+
         }
-        return null;
 
 
     }
