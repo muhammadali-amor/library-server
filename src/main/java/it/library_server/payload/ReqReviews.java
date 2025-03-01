@@ -1,10 +1,6 @@
 package it.library_server.payload;
 
-import jakarta.persistence.Column;
-
-import java.util.UUID;
-
-public record ReviewsDto(
+public record ReqReviews(
         Integer rating,
         String text
 ) {

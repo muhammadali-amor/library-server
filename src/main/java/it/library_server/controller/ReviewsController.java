@@ -2,6 +2,7 @@ package it.library_server.controller;
 
 import it.library_server.implement.controller.ReviewsControllerImpl;
 import it.library_server.payload.ApiResponse;
+import it.library_server.payload.ReqReviews;
 import it.library_server.payload.ReviewsDto;
 import it.library_server.service.ReviewsService;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ public class ReviewsController implements ReviewsControllerImpl {
 
     @Override
     @PostMapping("/send")
-    public HttpEntity<?> sendComment(@RequestParam(name = "userId") UUID userId, @RequestParam(name = "bookId") Long bookId, @RequestBody ReviewsDto reviewsDto) {
+    public HttpEntity<?> sendComment(@RequestParam(name = "userId") UUID userId, @RequestParam(name = "bookId") Long bookId, @RequestBody ReqReviews reviewsDto) {
         ApiResponse<?> apiResponse = reviewsService.sendComment(userId, bookId, reviewsDto);
         return ResponseEntity.status(apiResponse.isSuccess() ? HttpStatus.OK : HttpStatus.CONFLICT).body(apiResponse);
     }

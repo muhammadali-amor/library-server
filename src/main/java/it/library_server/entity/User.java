@@ -30,6 +30,8 @@ public class User extends AbsEntity implements UserDetails {
     @Column(nullable = false)
     private String password;
 
+    private String photoId;
+
     private String authProvider;
 
     @ManyToMany(fetch = FetchType.LAZY)
