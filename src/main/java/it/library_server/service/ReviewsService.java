@@ -4,6 +4,7 @@ import it.library_server.entity.Book;
 import it.library_server.entity.Reviews;
 import it.library_server.entity.User;
 import it.library_server.exception.ResourceNotFoundException;
+import it.library_server.implement.service.ReviewsServiceImpl;
 import it.library_server.payload.ApiResponse;
 import it.library_server.payload.ReviewsDto;
 import it.library_server.repository.AuthRepository;
@@ -22,13 +23,14 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class ReviewsService {
+public class ReviewsService implements ReviewsServiceImpl {
     private static final Logger logger = LoggerFactory.getLogger(ReviewsService.class);
     private final BookRepository bookRepository;
     private final AuthRepository authRepository;
     private final ReviewsRepository reviewsRepository;
 
-    public ApiResponse<?> sendReviews(UUID userId, Long bookId, ReviewsDto reviewsDto) {
+    @Override
+    public ApiResponse<?> sendComment(UUID userId, Long bookId, ReviewsDto reviewsDto) {
         try {
             User user = authRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException(404, "getUser", "userId", userId));
             Book book = bookRepository.findById(bookId).orElseThrow(() -> new ResourceNotFoundException(404, "getBook", "bookId", bookId));
