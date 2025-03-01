@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface ReviewsRepository extends JpaRepository<Reviews, Long> {
 
-    List<Reviews> findAllByBook(Long book); // Aynan bitta kitob boyich komentlar royxatini olish uchun
+    List<Reviews> findAllByBookId(Long bookId); // Aynan bitta kitob boyich komentlar royxatini olish uchun
 
     boolean existByUserIdAndBookId(UUID userId, Long bookId);//foydalanuvchi bu kitobga sharx yozgan yoki yoqligini aniqlash uchun
 

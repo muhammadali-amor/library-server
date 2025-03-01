@@ -11,8 +11,10 @@ public interface Messages {
 
     String ERROR = "error :( ";
     String ERROR_OBJ = "error {}";
+    String WARNING_BOOK = "bunday kitob mavjud emas";
 
-    String SEND_NOT_COMMENT="Siz allaqachon sharx yozib bolgansiz!";
-    String ERROR_COMMENT ="Sharx yozishda xatolik roy berdi";
-    String SEND_COMMENT="Sharx muaffaqiyatli qoshildi";
+    String SEND_NOT_COMMENT = "Siz allaqachon sharx yozib bolgansiz!";
+    String ERROR_COMMENT = "Sharx yozishda xatolik roy berdi";
+    String SEND_COMMENT = "Sharx muaffaqiyatli qoshildi";
+
 }

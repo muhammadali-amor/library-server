@@ -30,10 +30,10 @@ public class ReviewsService implements ReviewsServiceImpl {
 
     @Override
     public List<ResReviews> getAllComment(Long id) {
-        if (!bookRepository.existsById(id)) {
+        if (!existBook(id)) {
             throw new ResourceNotFoundException(404, "getBook", "BookId", id);
         }
-        return reviewsRepository.findAllByBook(id).stream()
+        return reviewsRepository.findAllByBookId(id).stream()
                 .map(this::mapToResReviews)
                 .toList();
     }
@@ -62,6 +62,31 @@ public class ReviewsService implements ReviewsServiceImpl {
             logger.error(Messages.ERROR_COMMENT);
             return new ApiResponse<>(Messages.ERROR, false);
         }
+    }
+
+    @Override
+    public double getColculatorReting(Long bookId) {
+        if (!existBook(bookId)) {
+            throw new ResourceNotFoundException(404, "getBook", "BookId", bookId);
+        }
+        List<Reviews> reviews = reviewsRepository.findAllByBookId(bookId);
+        // Agar sharhlar bo‘lmasa, 0 qaytadi
+        if (reviews.isEmpty()) {
+            return 0.0;
+        }
+        double averageRating = reviews.stream()
+                .mapToInt(Reviews::getRating)  // Reytinglarni int ga o‘tkazamiz
+                .average()                     // O‘rtachasini hisoblaymiz
+                .orElse(0.0);                  // Agar sharh bo‘lmasa, 0 qaytaramiz
+        return averageRating;
+    }
+
+    private boolean existBook(Long id) {
+        boolean exists = bookRepository.existsById(id);
+        if (!exists) {
+            logger.warn(Messages.WARNING_BOOK);
+        }
+        return exists;
     }
 
     private ResReviews mapToResReviews(Reviews reviews) {
