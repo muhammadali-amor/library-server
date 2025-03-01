@@ -20,7 +20,7 @@ import java.util.UUID;
 @RequestMapping("/api/comment")
 public class ReviewsController implements ReviewsControllerImpl {
     private final ReviewsService reviewsService;
-    
+
 
     @Override
     @GetMapping("/{id}")
