@@ -4,10 +4,8 @@ import jakarta.persistence.Column;
 
 import java.util.UUID;
 
-public record ReviewsDto (
-        Long id,
-        UUID userId,
-        Long bookId,
+public record ReviewsDto(
         Integer rating,
-        String comment
-){ }
+        String text
+) {
+}
