@@ -10,7 +10,6 @@ import it.library_server.repository.BookRepository;
 import it.library_server.repository.FavouriteBookRepository;
 import it.library_server.utils.Messages;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
