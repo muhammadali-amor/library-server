@@ -16,6 +16,7 @@ public record BookDto(
         Age age,
         String bookPdfName,
         String description,
-        List<Genre> genre
+        List<Genre> genres,
+        String coverImage
 ) {
 }

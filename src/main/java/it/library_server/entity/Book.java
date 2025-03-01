@@ -29,7 +29,7 @@ public class Book extends AbsNameEntity {
     private Age age;//kitob yosh chegarasi
 
     @Column(nullable = false)
-    private String coverImage;//kitob janri
+    private String coverImage;//kitob muqovasi rasmi
 
     @Column(nullable = false)
     private String description;//kitob haqida

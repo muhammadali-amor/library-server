@@ -9,7 +9,7 @@ import java.util.List;
 public interface BookServiceImpl {
     public List<BookDto> getBooks();
     public ApiResponse<?> addBook(BookDto bookDto);
-    public ApiResponse<?> updateBook(BookDto bookDto);
+    public ApiResponse<?> updateBook(BookDto bookDto, Long id);
     public ApiResponse<?> deleteBook(Long id);
     public Book getBook(Long id);
 }
