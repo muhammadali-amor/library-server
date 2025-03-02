@@ -1,16 +1,21 @@
 package it.library_server.service;
 
 import it.library_server.entity.Book;
+import it.library_server.entity.FavouriteBook;
 import it.library_server.exception.ResourceNotFoundException;
 import it.library_server.implement.service.BookServiceImpl;
 import it.library_server.payload.ApiResponse;
 import it.library_server.payload.BookDto;
 import it.library_server.repository.BookRepository;
+import it.library_server.repository.FavouriteBookRepository;
 import it.library_server.utils.Messages;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +25,7 @@ import org.slf4j.LoggerFactory;
 public class BookService implements BookServiceImpl {
     private static final Logger logger = LoggerFactory.getLogger(BookService.class);
     private final BookRepository bookRepository;
+    private final FavouriteBookRepository favouriteBookRepository;
 
     @Override
     public List<BookDto> getBooks() {
@@ -27,6 +33,24 @@ public class BookService implements BookServiceImpl {
                 .map(this::convertToDto)
                 .toList();
     }
+
+//    public List<BookDto> getAllBooksWithFavouriteStatus(UUID userId) {
+//        // Barcha kitoblarni olish
+//        List<Book> allBooks = bookRepository.findAll();
+//
+//        // Userning sevimli kitoblarini olish
+//        List<FavouriteBook> favouriteBooks = favouriteBookRepository.findByUserId(userId);
+//
+//        // Sevimli kitoblarning IDlarini HashSet qilib olish (tezroq qidirish uchun)
+//        Set<Long> favouriteBookIds = favouriteBooks.stream()
+//                .map(fb -> fb.getBook().getId())
+//                .collect(Collectors.toSet());
+//
+//        // Har bir kitobni DTO formatiga o‘tkazib, `isLiked`ni tekshirish
+//        return allBooks.stream()
+//                .map(book -> new BookDto(book, favouriteBookIds.contains(book.getId())))
+//                .collect(Collectors.toList());
+//    }
 
     @Override
     public ApiResponse<?> addBook(BookDto bookDto) {

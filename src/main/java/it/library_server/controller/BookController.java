@@ -22,6 +22,8 @@ public class BookController implements BookControllerImpl {
 
     @Override
     @GetMapping
+//    @ApiOperation(value ="Book", notes="Kitoblar",
+//            response = ResponseEntity.class)
     public HttpEntity<List<BookDto>> getBooks() {
         List<BookDto> books = bookService.getBooks();
         return ResponseEntity.ok(books);
