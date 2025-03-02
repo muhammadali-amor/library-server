@@ -63,8 +63,8 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/auth/**", "/api/comment/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/book/**").hasAuthority(RoleName.ADMIN.name())
-                        .requestMatchers(HttpMethod.GET, "/api/about/**", "/api/comfortable/**", "/api/stories/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/book/**","/api/favourite-book/**").hasAuthority(RoleName.ADMIN.name())
+                        .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2

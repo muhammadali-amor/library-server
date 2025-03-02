@@ -26,7 +26,7 @@ public class FavouriteBookController {
     }
 
     @PostMapping
-    public HttpEntity<?> toggleFavouriteBook(@RequestParam UUID userId, @RequestParam Long bookId) {
+    public HttpEntity<?> toggleFavouriteBook(@RequestParam(name = "user-id") UUID userId, @RequestParam("book-id") Long bookId) {
         ApiResponse<?> toggleFavourite = favouriteBookService.toggleFavourite(userId, bookId);
         return ResponseEntity.status(toggleFavourite.isSuccess() ? HttpStatus.OK : HttpStatus.CONFLICT).body(toggleFavourite);
     }
