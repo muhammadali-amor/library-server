@@ -35,21 +35,21 @@ public class BookController implements BookControllerImpl {
     }
 
     @Override
-    @PostMapping("/add-book")
+    @PostMapping
     public HttpEntity<?> addBook(@RequestBody BookDto bookDto) {
         ApiResponse<?> response = bookService.addBook(bookDto);
         return ResponseEntity.status(response.isSuccess() ? HttpStatus.OK : HttpStatus.CONFLICT).body(response);
     }
 
     @Override
-    @PutMapping("/edit-book/{id}")
-    public HttpEntity<?> updateBook(@RequestBody BookDto bookDto,@PathVariable Long id) {
+    @PutMapping("/{id}")
+    public HttpEntity<?> updateBook(@RequestBody BookDto bookDto, @PathVariable Long id) {
         ApiResponse<?> response = bookService.updateBook(bookDto, id);
         return ResponseEntity.status(response.isSuccess() ? HttpStatus.OK : HttpStatus.CONFLICT).body(response);
     }
 
     @Override
-    @DeleteMapping("/delete-book/{id}")
+    @DeleteMapping("/{id}")
     public HttpEntity<?> deleteBook(@PathVariable Long id) {
         ApiResponse<?> response = bookService.deleteBook(id);
         return ResponseEntity.status(response.isSuccess() ? HttpStatus.OK : HttpStatus.CONFLICT).body(response);
