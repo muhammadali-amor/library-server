@@ -6,6 +6,7 @@ import it.library_server.entity.User;
 import it.library_server.exception.ResourceNotFoundException;
 import it.library_server.payload.ApiResponse;
 import it.library_server.payload.BookDto;
+import it.library_server.payload.FavouriteBookDto;
 import it.library_server.repository.AuthRepository;
 import it.library_server.repository.BookRepository;
 import it.library_server.repository.FavouriteBookRepository;
@@ -16,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -30,15 +32,28 @@ public class FavouriteBookService {
     private final AuthRepository authRepository;
     private final BookRepository bookRepository;
 
-    public List<Book> getFavouriteBooks(UUID userId) {
-        logger.info("User ID: {}", userId);
-        List<FavouriteBook> favouriteBooks = favouriteBookRepository.findByUserId(userId);
-        logger.info("Favourite Books: {}", favouriteBooks);
+    public List<BookDto> getFavouriteBooks(UUID userId) {
         User user = authRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException(404, "getUser", "user id", userId));
-        return favouriteBookRepository.findByUserId(userId)
+        List<BookDto> bookDtos = new ArrayList<>();
+        List<Book> books = favouriteBookRepository.findByUserId(userId)
                 .stream()
                 .map(FavouriteBook::getBook)
-                .collect(Collectors.toList());
+                .toList();
+        for (Book book : books) {
+            BookDto bookDto = BookDto.builder()
+                    .id(book.getId())
+                    .name(book.getName())
+                    .author(book.getAuthor())
+                    .description(book.getDescription())
+                    .publishedYear(book.getPublishedYear())
+                    .language(book.getLanguage())
+                    .age(book.getAge())
+                    .bookPdfName(book.getBookPdfName())
+                    .genres(book.getGenres())
+                    .build();
+            bookDtos.add(bookDto);
+        }
+        return bookDtos;
     }
 
     @Transactional

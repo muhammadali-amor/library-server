@@ -28,7 +28,7 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if (intiMode.equals("create") || intiMode.equals("create-drop")) {
+        if (intiMode.equals("update") || intiMode.equals("create-drop")) {
             for (RoleName value : RoleName.values()) {
                 roleRepository.save(new Role(value));
             }

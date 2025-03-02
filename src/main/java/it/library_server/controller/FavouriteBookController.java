@@ -2,6 +2,7 @@ package it.library_server.controller;
 
 import it.library_server.entity.Book;
 import it.library_server.payload.ApiResponse;
+import it.library_server.payload.BookDto;
 import it.library_server.service.FavouriteBookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
@@ -20,8 +21,8 @@ public class FavouriteBookController {
     private final FavouriteBookService favouriteBookService;
 
     @GetMapping("/{userId}")
-    public HttpEntity<List<Book>> getFavouriteBooks(@PathVariable UUID userId) {
-        List<Book> favouriteBooks = favouriteBookService.getFavouriteBooks(userId);
+    public HttpEntity<?> getFavouriteBooks(@PathVariable UUID userId) {
+        List<BookDto> favouriteBooks = favouriteBookService.getFavouriteBooks(userId);
         return ResponseEntity.ok(favouriteBooks);
     }
 

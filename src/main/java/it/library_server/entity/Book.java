@@ -20,7 +20,7 @@ public class Book extends AbsNameEntity {
     private String author;//kitob kim tomonidan yozilgan
 
     @Column(nullable = false)
-    private int publisherYear;//kitob yili
+    private int publishedYear;//kitob yili
 
     @Column(nullable = false)
     private String language;//kitob tili

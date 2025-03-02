@@ -63,7 +63,7 @@ public class BookService implements BookServiceImpl {
                 book.setDescription(bookDto.description());
                 book.setLanguage(bookDto.language());
                 book.setCoverImage(bookDto.coverImage());
-                book.setPublisherYear(bookDto.publishedYear());
+                book.setPublishedYear(bookDto.publishedYear());
                 book.setAge(bookDto.age());
                 book.setBookPdfName(bookDto.bookPdfName());
                 book.setGenres(bookDto.genres());
@@ -98,7 +98,7 @@ public class BookService implements BookServiceImpl {
     public Book bookBuilder(BookDto bookDto) {
         return Book.builder()
                 .author(bookDto.author())
-                .publisherYear(bookDto.publishedYear())
+                .publishedYear(bookDto.publishedYear())
                 .language(bookDto.language())
                 .age(bookDto.age())
                 .coverImage(bookDto.coverImage())
@@ -115,7 +115,7 @@ public class BookService implements BookServiceImpl {
                 .name(book.getName())
                 .author(book.getAuthor())
                 .description(book.getDescription())
-                .publishedYear(book.getPublisherYear())
+                .publishedYear(book.getPublishedYear())
                 .language(book.getLanguage())
                 .age(book.getAge())
                 .bookPdfName(book.getBookPdfName())
