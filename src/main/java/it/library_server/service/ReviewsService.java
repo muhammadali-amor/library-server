@@ -12,6 +12,7 @@ import it.library_server.repository.AuthRepository;
 import it.library_server.repository.BookRepository;
 import it.library_server.repository.ReviewsRepository;
 import it.library_server.utils.Messages;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +39,7 @@ public class ReviewsService implements ReviewsServiceImpl {
                 .toList();
     }
 
+    @Transactional
     @Override
     public ApiResponse<?> sendComment(UUID userId, Long bookId, ReqReviewsDto reviewsDto) {
         try {
@@ -65,7 +67,7 @@ public class ReviewsService implements ReviewsServiceImpl {
     }
 
     @Override
-    public double getColculatorReting(Long bookId) {
+    public double getCalculatedRating(Long bookId) {
         if (!existBook(bookId)) {
             throw new ResourceNotFoundException(404, "getBook", "BookId", bookId);
         }

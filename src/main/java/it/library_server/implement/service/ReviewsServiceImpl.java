@@ -12,5 +12,5 @@ public interface ReviewsServiceImpl {
 
     ApiResponse<?> sendComment(UUID userId, Long bookId, ReqReviewsDto reviewsDto);
 
-    double getColculatorReting(Long bookId);
+    double getCalculatedRating(Long bookId);
 }

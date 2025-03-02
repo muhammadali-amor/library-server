@@ -32,13 +32,13 @@ public class ReviewsController implements ReviewsControllerImpl {
     @Override
     @GetMapping("/rating/{id}")
     public HttpEntity<?> getAllReting(@PathVariable Long id) {
-        double colculatorReting = reviewsService.getColculatorReting(id);
+        double colculatorReting = reviewsService.getCalculatedRating(id);
         return ResponseEntity.ok(colculatorReting);
     }
 
     @Override
     @PostMapping("/send")
-    public HttpEntity<?> sendComment(@RequestParam(name = "userId") UUID userId, @RequestParam(name = "bookId") Long bookId, @RequestBody ReqReviewsDto reviewsDto) {
+    public HttpEntity<?> sendComment(@RequestParam(required = false, name = "user-id") UUID userId, @RequestParam(required = false, name = "book-id") Long bookId, @RequestBody ReqReviewsDto reviewsDto) {
         ApiResponse<?> apiResponse = reviewsService.sendComment(userId, bookId, reviewsDto);
         return ResponseEntity.status(apiResponse.isSuccess() ? HttpStatus.OK : HttpStatus.CONFLICT).body(apiResponse);
     }
