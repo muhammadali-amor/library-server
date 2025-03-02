@@ -31,6 +31,9 @@ public class FavouriteBookService {
     private final BookRepository bookRepository;
 
     public List<Book> getFavouriteBooks(UUID userId) {
+        logger.info("User ID: {}", userId);
+        List<FavouriteBook> favouriteBooks = favouriteBookRepository.findByUserId(userId);
+        logger.info("Favourite Books: {}", favouriteBooks);
         User user = authRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException(404, "getUser", "user id", userId));
         return favouriteBookRepository.findByUserId(userId)
                 .stream()
