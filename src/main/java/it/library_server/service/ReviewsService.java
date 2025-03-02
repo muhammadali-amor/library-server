@@ -6,8 +6,8 @@ import it.library_server.entity.User;
 import it.library_server.exception.ResourceNotFoundException;
 import it.library_server.implement.service.ReviewsServiceImpl;
 import it.library_server.payload.ApiResponse;
-import it.library_server.payload.req.ReqReviews;
-import it.library_server.payload.res.ResReviews;
+import it.library_server.payload.req.ReqReviewsDto;
+import it.library_server.payload.res.ResReviewsDto;
 import it.library_server.repository.AuthRepository;
 import it.library_server.repository.BookRepository;
 import it.library_server.repository.ReviewsRepository;
@@ -29,7 +29,7 @@ public class ReviewsService implements ReviewsServiceImpl {
 
 
     @Override
-    public List<ResReviews> getAllComment(Long id) {
+    public List<ResReviewsDto> getAllComment(Long id) {
         if (!existBook(id)) {
             throw new ResourceNotFoundException(404, "getBook", "BookId", id);
         }
@@ -39,7 +39,7 @@ public class ReviewsService implements ReviewsServiceImpl {
     }
 
     @Override
-    public ApiResponse<?> sendComment(UUID userId, Long bookId, ReqReviews reviewsDto) {
+    public ApiResponse<?> sendComment(UUID userId, Long bookId, ReqReviewsDto reviewsDto) {
         try {
             User user = authRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException(404, "getUser", "userId", userId));
             Book book = bookRepository.findById(bookId).orElseThrow(() -> new ResourceNotFoundException(404, "getBook", "bookId", bookId));
@@ -89,8 +89,8 @@ public class ReviewsService implements ReviewsServiceImpl {
         return exists;
     }
 
-    private ResReviews mapToResReviews(Reviews reviews) {
-        return new ResReviews(
+    private ResReviewsDto mapToResReviews(Reviews reviews) {
+        return new ResReviewsDto(
                 reviews.getText(),
                 reviews.getRating(),
                 reviews.getUser().getName(),

@@ -2,7 +2,7 @@ package it.library_server.payload.res;
 
 import java.sql.Timestamp;
 
-public record ResReviews(
+public record ResReviewsDto(
         String text,
         Integer rating,
         String userName,

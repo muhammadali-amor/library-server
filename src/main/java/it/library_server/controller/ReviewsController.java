@@ -2,8 +2,8 @@ package it.library_server.controller;
 
 import it.library_server.implement.controller.ReviewsControllerImpl;
 import it.library_server.payload.ApiResponse;
-import it.library_server.payload.req.ReqReviews;
-import it.library_server.payload.res.ResReviews;
+import it.library_server.payload.req.ReqReviewsDto;
+import it.library_server.payload.res.ResReviewsDto;
 import it.library_server.service.ReviewsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
@@ -25,7 +25,7 @@ public class ReviewsController implements ReviewsControllerImpl {
     @Override
     @GetMapping("/{id}")
     public HttpEntity<?> getAllComment(@PathVariable Long id) {
-        List<ResReviews> allComment = reviewsService.getAllComment(id);
+        List<ResReviewsDto> allComment = reviewsService.getAllComment(id);
         return ResponseEntity.ok(allComment);
     }
 
@@ -38,7 +38,7 @@ public class ReviewsController implements ReviewsControllerImpl {
 
     @Override
     @PostMapping("/send")
-    public HttpEntity<?> sendComment(@RequestParam(name = "userId") UUID userId, @RequestParam(name = "bookId") Long bookId, @RequestBody ReqReviews reviewsDto) {
+    public HttpEntity<?> sendComment(@RequestParam(name = "userId") UUID userId, @RequestParam(name = "bookId") Long bookId, @RequestBody ReqReviewsDto reviewsDto) {
         ApiResponse<?> apiResponse = reviewsService.sendComment(userId, bookId, reviewsDto);
         return ResponseEntity.status(apiResponse.isSuccess() ? HttpStatus.OK : HttpStatus.CONFLICT).body(apiResponse);
     }

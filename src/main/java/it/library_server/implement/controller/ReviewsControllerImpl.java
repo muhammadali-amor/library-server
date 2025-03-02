@@ -1,10 +1,8 @@
 package it.library_server.implement.controller;
 
-import it.library_server.payload.req.ReqReviews;
-import it.library_server.payload.res.ResReviews;
+import it.library_server.payload.req.ReqReviewsDto;
 import org.springframework.http.HttpEntity;
 
-import java.util.List;
 import java.util.UUID;
 
 public interface ReviewsControllerImpl {
@@ -12,5 +10,5 @@ public interface ReviewsControllerImpl {
 
     HttpEntity<?> getAllReting(Long id);
 
-    HttpEntity<?> sendComment(UUID userId, Long bookId, ReqReviews reviewsDto);
+    HttpEntity<?> sendComment(UUID userId, Long bookId, ReqReviewsDto reviewsDto);
 }

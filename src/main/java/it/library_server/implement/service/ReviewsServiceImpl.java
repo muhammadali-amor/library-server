@@ -1,16 +1,16 @@
 package it.library_server.implement.service;
 
 import it.library_server.payload.ApiResponse;
-import it.library_server.payload.req.ReqReviews;
-import it.library_server.payload.res.ResReviews;
+import it.library_server.payload.req.ReqReviewsDto;
+import it.library_server.payload.res.ResReviewsDto;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface ReviewsServiceImpl {
-    List<ResReviews> getAllComment(Long id);
+    List<ResReviewsDto> getAllComment(Long id);
 
-    ApiResponse<?> sendComment(UUID userId, Long bookId, ReqReviews reviewsDto);
+    ApiResponse<?> sendComment(UUID userId, Long bookId, ReqReviewsDto reviewsDto);
 
     double getColculatorReting(Long bookId);
 }
