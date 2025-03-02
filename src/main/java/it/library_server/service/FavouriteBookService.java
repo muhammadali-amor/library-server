@@ -5,6 +5,7 @@ import it.library_server.entity.FavouriteBook;
 import it.library_server.entity.User;
 import it.library_server.exception.ResourceNotFoundException;
 import it.library_server.payload.ApiResponse;
+import it.library_server.payload.BookDto;
 import it.library_server.repository.AuthRepository;
 import it.library_server.repository.BookRepository;
 import it.library_server.repository.FavouriteBookRepository;
@@ -15,8 +16,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +29,14 @@ public class FavouriteBookService {
     private final FavouriteBookRepository favouriteBookRepository;
     private final AuthRepository authRepository;
     private final BookRepository bookRepository;
+
+    public List<Book> getFavouriteBooks(UUID userId) {
+        User user = authRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException(404, "getUser", "user id", userId));
+        return favouriteBookRepository.findByUserId(userId)
+                .stream()
+                .map(FavouriteBook::getBook)
+                .collect(Collectors.toList());
+    }
 
     @Transactional
     public ApiResponse<?> toggleFavourite(UUID userId, Long bookId) {

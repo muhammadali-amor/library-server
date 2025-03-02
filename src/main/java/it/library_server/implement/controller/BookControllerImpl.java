@@ -10,6 +10,6 @@ public interface BookControllerImpl {
     HttpEntity<?> addBook(BookDto bookDto);
     HttpEntity<?> updateBook(BookDto bookDto, Long id);
     HttpEntity<?> deleteBook(Long id);
-    List<BookDto> getBooks();
-    Book getBook(Long id);
+    HttpEntity<?> getBooks();
+    HttpEntity<?> getBook(Long id);
 }

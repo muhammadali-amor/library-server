@@ -22,16 +22,16 @@ public class BookController implements BookControllerImpl {
 
     @Override
     @GetMapping
-    public List<BookDto> getBooks() {
+    public HttpEntity<List<BookDto>> getBooks() {
         List<BookDto> books = bookService.getBooks();
-        return ResponseEntity.ok(books).getBody();
+        return ResponseEntity.ok(books);
     }
 
     @Override
     @GetMapping("/{id}")
-    public Book getBook(@PathVariable Long id) {
+    public HttpEntity<Book> getBook(@PathVariable Long id) {
         Book book = bookService.getBook(id);
-        return ResponseEntity.ok(book).getBody();
+        return ResponseEntity.ok(book);
     }
 
     @Override
