@@ -5,9 +5,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface BookRepository extends JpaRepository<Book, Long> {
     @Query("SELECT COUNT(b) > 0 FROM Book b WHERE LOWER(b.name) = LOWER(:name)")
     boolean existsByNameIgnoreCase(@Param("name") String name);
-
     boolean existsById(Long id);
+
 }

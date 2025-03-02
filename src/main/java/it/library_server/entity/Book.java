@@ -36,7 +36,8 @@ public class Book extends AbsNameEntity {
 
     @Column(nullable = false)
     private String bookPdfName;//kitob pdf
-
+    private double rating;
+    
     @ElementCollection
     @CollectionTable(name = "movie_genres", joinColumns = @JoinColumn(name = "movie_id"))
     @Enumerated(EnumType.STRING)

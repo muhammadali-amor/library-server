@@ -18,6 +18,7 @@ public record BookDto(
         String description,
         List<Genre> genres,
         String coverImage,
-        boolean isLike
+        boolean isLike,
+        double rating
 ) {
 }

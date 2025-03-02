@@ -12,9 +12,7 @@ import it.library_server.utils.Messages;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -26,6 +24,7 @@ public class BookService implements BookServiceImpl {
     private static final Logger logger = LoggerFactory.getLogger(BookService.class);
     private final BookRepository bookRepository;
     private final FavouriteBookRepository favouriteBookRepository;
+    private final ReviewsService reviewsService;
 
     @Override
     public List<BookDto> getBooks() {
@@ -58,9 +57,36 @@ public class BookService implements BookServiceImpl {
                         book.getDescription(),
                         book.getGenres(),
                         book.getCoverImage(),
-                        favouriteBookIds.contains(book.getId())))
+                        favouriteBookIds.contains(book.getId()),
+                        book.getRating()
+                ))
                 .toList();
     }
+
+    public List<BookDto> getTopRatedBooks() {
+        List<Book> books = bookRepository.findAll();
+
+        List<BookDto> topRatedBooks = books.stream()
+                .map(book -> BookDto.builder()
+                        .id(book.getId())
+                        .name(book.getName())
+                        .author(book.getAuthor())
+                        .coverImage(book.getCoverImage())
+                        .age(book.getAge())
+                        .language(book.getLanguage())
+                        .rating(reviewsService.getCalculatedRating(book.getId()))
+                        .build()
+                )
+                .sorted(Comparator.comparingDouble(BookDto::rating).reversed()) // Reyting bo‘yicha kamayish tartibida
+                .limit(10) // Eng yuqori reytingli 10 kitobni olish
+                .toList();
+
+        // Random qilib aralashtirish
+        Collections.shuffle(topRatedBooks);
+
+        return topRatedBooks;
+    }
+
 
     @Override
     public ApiResponse<?> addBook(BookDto bookDto) {

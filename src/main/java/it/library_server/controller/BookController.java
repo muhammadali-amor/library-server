@@ -43,6 +43,11 @@ public class BookController implements BookControllerImpl {
         return ResponseEntity.ok(book);
     }
 
+    @GetMapping("/top-rated-book")
+    public ResponseEntity<List<BookDto>> getRandomTopRatedBooks() {
+        return ResponseEntity.ok(bookService.getTopRatedBooks());
+    }
+
     @Override
     @PostMapping
     public HttpEntity<?> addBook(@RequestBody BookDto bookDto) {

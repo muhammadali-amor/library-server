@@ -31,13 +31,14 @@ public class ReviewsService implements ReviewsServiceImpl {
 
     @Override
     public List<ResReviewsDto> getAllComment(Long id) {
-        if (!existBook(id)) {
+        if (!validateBook(id)) {
             throw new ResourceNotFoundException(404, "getBook", "BookId", id);
         }
         return reviewsRepository.findAllByBookId(id).stream()
                 .map(this::mapToResReviews)
                 .toList();
     }
+
 
     @Transactional
     @Override
@@ -68,7 +69,7 @@ public class ReviewsService implements ReviewsServiceImpl {
 
     @Override
     public double getCalculatedRating(Long bookId) {
-        if (!existBook(bookId)) {
+        if (!validateBook(bookId)) {
             throw new ResourceNotFoundException(404, "getBook", "BookId", bookId);
         }
         List<Reviews> reviews = reviewsRepository.findAllByBookId(bookId);
@@ -83,7 +84,7 @@ public class ReviewsService implements ReviewsServiceImpl {
         return averageRating;
     }
 
-    private boolean existBook(Long id) {
+    private boolean validateBook(Long id) {
         boolean exists = bookRepository.existsById(id);
         if (!exists) {
             logger.warn(Messages.WARNING_BOOK);
@@ -101,4 +102,5 @@ public class ReviewsService implements ReviewsServiceImpl {
                 reviews.getCreatedAt()
         );
     }
+
 }
