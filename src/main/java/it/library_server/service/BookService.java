@@ -34,23 +34,33 @@ public class BookService implements BookServiceImpl {
                 .toList();
     }
 
-//    public List<BookDto> getAllBooksWithFavouriteStatus(UUID userId) {
-//        // Barcha kitoblarni olish
-//        List<Book> allBooks = bookRepository.findAll();
-//
-//        // Userning sevimli kitoblarini olish
-//        List<FavouriteBook> favouriteBooks = favouriteBookRepository.findByUserId(userId);
-//
-//        // Sevimli kitoblarning IDlarini HashSet qilib olish (tezroq qidirish uchun)
-//        Set<Long> favouriteBookIds = favouriteBooks.stream()
-//                .map(fb -> fb.getBook().getId())
-//                .collect(Collectors.toSet());
-//
-//        // Har bir kitobni DTO formatiga o‘tkazib, `isLiked`ni tekshirish
-//        return allBooks.stream()
-//                .map(book -> new BookDto(book, favouriteBookIds.contains(book.getId())))
-//                .collect(Collectors.toList());
-//    }
+    public List<BookDto> getAllBooksWithFavouriteStatus(UUID userId) {
+        List<Book> allBooks = bookRepository.findAll();
+
+        // Userning sevimli kitoblarini olish
+        List<FavouriteBook> favouriteBooks = favouriteBookRepository.findByUserId(userId);
+
+        // Sevimli kitoblarning IDlarini HashSet qilib olish (tezroq qidirish uchun)
+        Set<Long> favouriteBookIds = favouriteBooks.stream()
+                .map(fb -> fb.getBook().getId())
+                .collect(Collectors.toSet());
+
+        // Har bir kitobni DTO formatiga o‘tkazib, `isLiked`ni tekshirish
+        return allBooks.stream()
+                .map(book -> new BookDto(
+                        book.getId(),
+                        book.getName(),
+                        book.getAuthor(),
+                        book.getPublishedYear(),
+                        book.getLanguage(),
+                        book.getAge(),
+                        book.getBookPdfName(),
+                        book.getDescription(),
+                        book.getGenres(),
+                        book.getCoverImage(),
+                        favouriteBookIds.contains(book.getId())))
+                .toList();
+    }
 
     @Override
     public ApiResponse<?> addBook(BookDto bookDto) {

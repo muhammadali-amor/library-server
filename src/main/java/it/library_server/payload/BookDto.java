@@ -17,6 +17,7 @@ public record BookDto(
         String bookPdfName,
         String description,
         List<Genre> genres,
-        String coverImage
+        String coverImage,
+        boolean isLike
 ) {
 }

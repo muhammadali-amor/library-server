@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,9 +25,15 @@ public class BookController implements BookControllerImpl {
     @GetMapping
 //    @ApiOperation(value ="Book", notes="Kitoblar",
 //            response = ResponseEntity.class)
-    public HttpEntity<List<BookDto>> getBooks() {
+    public HttpEntity<?> getBooks() {
         List<BookDto> books = bookService.getBooks();
         return ResponseEntity.ok(books);
+    }
+
+    @GetMapping("/{userId}")
+    public HttpEntity<?> getBooks(@PathVariable UUID userId) {
+        List<BookDto> booksWithFavouriteStatus = bookService.getAllBooksWithFavouriteStatus(userId);
+        return ResponseEntity.ok(booksWithFavouriteStatus);
     }
 
     @Override
