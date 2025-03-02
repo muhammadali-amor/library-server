@@ -6,7 +6,6 @@ import it.library_server.entity.User;
 import it.library_server.exception.ResourceNotFoundException;
 import it.library_server.payload.ApiResponse;
 import it.library_server.payload.BookDto;
-import it.library_server.payload.FavouriteBookDto;
 import it.library_server.repository.AuthRepository;
 import it.library_server.repository.BookRepository;
 import it.library_server.repository.FavouriteBookRepository;
@@ -21,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
