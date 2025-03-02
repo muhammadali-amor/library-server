@@ -1,5 +1,6 @@
 package it.library_server.controller;
 
+import it.library_server.entity.Book;
 import it.library_server.implement.controller.BookControllerImpl;
 import it.library_server.payload.ApiResponse;
 import it.library_server.payload.BookDto;
@@ -8,9 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,29 +21,37 @@ public class BookController implements BookControllerImpl {
     private final BookService bookService;
 
     @Override
+    @GetMapping
+    public List<BookDto> getBooks() {
+        List<BookDto> books = bookService.getBooks();
+        return ResponseEntity.ok(books).getBody();
+    }
+
+    @Override
+    @GetMapping("/{id}")
+    public Book getBook(@PathVariable Long id) {
+        Book book = bookService.getBook(id);
+        return ResponseEntity.ok(book).getBody();
+    }
+
+    @Override
     @PostMapping("/add-book")
-    public HttpEntity<?> addBook(BookDto bookDto) {
+    public HttpEntity<?> addBook(@RequestBody BookDto bookDto) {
         ApiResponse<?> response = bookService.addBook(bookDto);
         return ResponseEntity.status(response.isSuccess() ? HttpStatus.OK : HttpStatus.CONFLICT).body(response);
     }
 
     @Override
-    public HttpEntity<?> updateBook(BookDto bookDto) {
-        return null;
+    @PutMapping("/edit-book/{id}")
+    public HttpEntity<?> updateBook(@RequestBody BookDto bookDto,@PathVariable Long id) {
+        ApiResponse<?> response = bookService.updateBook(bookDto, id);
+        return ResponseEntity.status(response.isSuccess() ? HttpStatus.OK : HttpStatus.CONFLICT).body(response);
     }
 
     @Override
-    public HttpEntity<?> deleteBook(BookDto bookDto) {
-        return null;
-    }
-
-    @Override
-    public List<BookDto> getBook() {
-        return List.of();
-    }
-
-    @Override
-    public BookDto getOneBook() {
-        return null;
+    @DeleteMapping("/delete-book/{id}")
+    public HttpEntity<?> deleteBook(@PathVariable Long id) {
+        ApiResponse<?> response = bookService.deleteBook(id);
+        return ResponseEntity.status(response.isSuccess() ? HttpStatus.OK : HttpStatus.CONFLICT).body(response);
     }
 }
