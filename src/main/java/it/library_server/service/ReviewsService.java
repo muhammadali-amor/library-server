@@ -44,7 +44,7 @@ public class ReviewsService implements ReviewsServiceImpl {
             User user = authRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException(404, "getUser", "userId", userId));
             Book book = bookRepository.findById(bookId).orElseThrow(() -> new ResourceNotFoundException(404, "getBook", "bookId", bookId));
             //user bu kitobga sharx yozgan yoki yoqligini aniqlash uchun
-            if (reviewsRepository.existByUserIdAndBookId(userId, bookId)) {
+            if (reviewsRepository.existsByUserIdAndBookId(userId, bookId)) {
                 logger.error(Messages.SEND_NOT_COMMENT);
                 return new ApiResponse<>(Messages.SEND_NOT_COMMENT, false);
             }
