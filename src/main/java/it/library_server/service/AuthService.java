@@ -30,9 +30,7 @@ public class AuthService implements UserDetailsService {
     private final RoleRepository roleRepository;
 //    private final MessageRepository messageRepository;
 
-
 //    private final JavaMailSender mailSender;
-
 
     @Autowired
     public PasswordEncoder passwordEncoder() {
