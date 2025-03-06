@@ -27,7 +27,7 @@ public class DataLoader implements CommandLineRunner {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args){
         if (intiMode.equals("update") || intiMode.equals("create-drop")) {
             for (RoleName value : RoleName.values()) {
                 roleRepository.save(new Role(value));

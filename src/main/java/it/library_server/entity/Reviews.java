@@ -15,9 +15,6 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Builder
 public class Reviews {
-    @Column(nullable = false, updatable = false)
-    @CreationTimestamp
-    private Timestamp createdAt = new Timestamp(System.currentTimeMillis());
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -37,5 +34,9 @@ public class Reviews {
 
     @Column(nullable = false)
     private String text;
+
+    @Column(nullable = false, updatable = false)
+    @CreationTimestamp
+    private Timestamp createdAt = new Timestamp(System.currentTimeMillis());
 }
 

@@ -38,12 +38,6 @@ public class AuthService implements UserDetailsService {
     }
 
 
-
-
-
-
-
-
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return (UserDetails) authRepository.findUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException("getUser"));
@@ -177,86 +171,4 @@ public class AuthService implements UserDetailsService {
             return new ApiResponse<>("Xatolik", false);
         }
     }
-
-//    public ApiResponse<?> sendMessage(UUID id, MessageDto messageDto) {
-//        try {
-//            User sendUser = authRepository.findById(id).orElseThrow(() -> new Project.Restaurantbackend.exception.ResourceNotFoundException(404, "get user", "user id", messageDto.getUserId()));
-//            Message message = Message.builder()
-//                    .sendUser(sendUser)
-//                    .message(messageDto.getMessage())
-//                    .build();
-//            messageRepository.save(message);
-//            return new ApiResponse<>("Xabar yuborildi", true);
-//        } catch (Exception e) {
-//            return new ApiResponse<>("Xabar xato", false);
-//        }
-//    }
-
-//    public List<MessageDto> getMessages(UUID id) {
-//        User user = authRepository.findById(id).orElseThrow(() -> new Project.Restaurantbackend.exception.ResourceNotFoundException(404, "get user", "user id", id));
-//        List<MessageDto> messageDtoList = new ArrayList<>();
-//        for (Message message : messageRepository.findAll()) {
-//            if (message.getSendUser().getId().equals(id)) {
-//                MessageDto messageDto = MessageDto.builder()
-//                        .id(message.getId())
-//                        .message(message.getMessage())
-//                        .messageReply(message.getReplyMessage())
-//                        .build();
-//                messageDtoList.add(messageDto);
-//            }
-//        }
-//        return messageDtoList;
-//    }
-
-//    public List<MessageDto> getAdminMessages() {
-//        List<MessageDto> messageDtoList = new ArrayList<>();
-//        List<Message> messages = messageRepository.findAll();
-////        for (Message message : messageRepository.findAll()) {
-////            MessageDto messageDto = MessageDto.builder()
-////                    .id(message.getId())
-////                    .user(message.getSendUser())
-////                    .message(message.getMessage())
-////                    .messageReply(message.getReplyMessage())
-////                    .build();
-////            messageDtoList.add(messageDto);
-////        }
-//        for (int i = messages.size() - 1; i >= 0; i--) {
-//            MessageDto messageDto = MessageDto.builder()
-//                    .id(messages.get(i).getId())
-//                    .user(messages.get(i).getSendUser())
-//                    .message(messages.get(i).getMessage())
-//                    .messageReply(messages.get(i).getReplyMessage())
-//                    .build();
-//            messageDtoList.add(messageDto);
-//        }
-//        return messageDtoList;
-//    }
-
-//    public ApiResponse<?> adminReplyUser(UUID messageId, MessageDto messageDto) {
-//        try {
-//            Message message = messageRepository.findById(messageId).orElseThrow(() -> new Project.Restaurantbackend.exception.ResourceNotFoundException(404, "get message", "message id", messageId));
-//            if (message.getReplyMessage() == null) {
-//                message.setReplyMessage(messageDto.getMessageReply());
-//                messageRepository.save(message);
-//                return new ApiResponse<>("Javob qaytarildi", true);
-//            } else {
-//                message.setReplyMessage(messageDto.getMessageReply());
-//                messageRepository.save(message);
-//                return new ApiResponse<>("Qaytarilgan javob o'chirildi", true);
-//            }
-//        } catch (Exception e) {
-//            return new ApiResponse<>("Javob qaytarishda xatolik", false);
-//        }
-//    }
-
-//    public ApiResponse<?> adminReplyDelete(UUID id) {
-//        try {
-//            Message message = messageRepository.findById(id).orElseThrow(() -> new Project.Restaurantbackend.exception.ResourceNotFoundException(404, "egt message", "message id", id));
-//            message.setReplyMessage(null);
-//            messageRepository.save(message);
-//            return new ApiResponse<>("Javob o'chirildi", true);
-//        } catch (Exception e) {
-//            return new ApiResponse<>("Javob o'chirildida xatolik", true);
-//        }
-//    }
 }
