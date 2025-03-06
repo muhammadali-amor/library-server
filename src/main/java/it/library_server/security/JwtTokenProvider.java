@@ -18,11 +18,15 @@ public class JwtTokenProvider {
     @Value("${app.jwtSecretKey}")
     private String JWT_SECRET;
 
-    @Value("${app.jwtExpirationHours:2}") // 2 soat default
+    @Value("${app.jwtExpirationHours}") // 2 soat default
     private int JWT_EXPIRATION_HOURS;
 
     public String generateAccessToken(User user) {
         try {
+            if (JWT_SECRET == null || JWT_SECRET.isEmpty()) {
+                throw new IllegalStateException("JWT_SECRET konfiguratsiya qilinmagan!");
+            }
+
             Algorithm algorithm = Algorithm.HMAC256(JWT_SECRET);
             return JWT.create()
                     .withSubject(user.getEmail())
@@ -37,6 +41,10 @@ public class JwtTokenProvider {
 
     public String validateToken(String token) {
         try {
+            if (JWT_SECRET == null || JWT_SECRET.isEmpty()) {
+                throw new IllegalStateException("JWT_SECRET konfiguratsiya qilinmagan!");
+            }
+
             Algorithm algorithm = Algorithm.HMAC256(JWT_SECRET);
             return JWT.require(algorithm)
                     .build()

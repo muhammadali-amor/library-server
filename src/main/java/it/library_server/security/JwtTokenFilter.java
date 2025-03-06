@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -22,6 +23,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthRepository authRepository;
+    private final UserDetailsService userDetailsService; // UserDetailsService orqali olish
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -32,18 +34,17 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 String email = jwtTokenProvider.validateToken(token);
 
                 if (email != null) {
-                    Optional<User> userOptional = authRepository.findByEmail(email);
+                    UserDetails userDetails = userDetailsService.loadUserByUsername(email); // UserDetails orqali olish
 
-                    if (userOptional.isPresent()) {
-                        UserDetails user = userOptional.get();
-                        UsernamePasswordAuthenticationToken authentication =
-                                new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+                    UsernamePasswordAuthenticationToken authentication =
+                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 
-                        SecurityContextHolder.getContext().setAuthentication(authentication);
-                    }
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                } else {
+                    SecurityContextHolder.clearContext(); // Token yaroqsiz bo‘lsa, kontekstni tozalaymiz
                 }
             } catch (Exception e) {
-                SecurityContextHolder.clearContext(); // Xatolik bo‘lsa, kontekstni tozalaymiz
+                SecurityContextHolder.clearContext(); // Xatolik bo‘lsa, kontekstni tozalash lozim
             }
         }
         filterChain.doFilter(request, response);
