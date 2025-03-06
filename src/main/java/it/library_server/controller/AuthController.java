@@ -46,7 +46,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public HttpEntity<?> addUser(@RequestBody RegisterDto registerDto) {
-        return authService.addUser(registerDto, authenticationManager);
+       return   authService.addUser(registerDto, authenticationManager);
     }
 
     @DeleteMapping("/{id}")

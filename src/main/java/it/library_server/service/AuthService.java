@@ -98,13 +98,15 @@ public class AuthService implements UserDetailsService {
                         .enabled(true)
                         .build();
                 User save = authRepository.save(user);
+                String resToken = jwtTokenProvider.generateAccessToken(save);
                 LoginDto loginDto = LoginDto.builder()
                         .email(save.getEmail())
                         .password(registerDto.getPassword())
                         .build();
                 return login(loginDto, authenticationManager);
+
             } else {
-                return ResponseEntity.ok(new ApiResponse<>("Afsuski bunday emaildan foydalanilgan😔", false));
+                return ResponseEntity.ok(new ApiResponse<>("Afsuski bunday emaildan foydalanilgan😔",true));
             }
         } catch (Exception e) {
             return ResponseEntity.ok(new ApiResponse<>("Xatolik", false));

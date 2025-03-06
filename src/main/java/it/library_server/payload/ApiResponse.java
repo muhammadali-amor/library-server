@@ -10,18 +10,23 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 public class ApiResponse<T> implements Serializable {
     private String message;
     private boolean success;
-    private ResToken resToken;
-    private User user;
+    private String resToken;
+    private RegisterDto registerDto;
 
     public ApiResponse(String message, boolean success) {
         this.message = message;
         this.success = success;
+    }
+
+    public ApiResponse(String message, boolean success, String resToken, RegisterDto registerDto) {
+        this.message = message;
+        this.success = success;
+        this.resToken = resToken;
+        this.registerDto = registerDto;
     }
 }
