@@ -182,5 +182,4 @@ public class BookService implements BookServiceImpl {
                 .genres(book.getGenres())
                 .build();
     }
-
 }
