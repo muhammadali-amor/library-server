@@ -67,8 +67,8 @@ public class SecurityConfig {
                                 "/swagger-ui.html",
                                 "/v3/api-docs/**"
                         ).permitAll()
-                        .requestMatchers("/api/auth/**", "/api/comment/**", "/api/book/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/favourite-book/**").hasAuthority(RoleName.ADMIN.name())
+                        .requestMatchers("/api/auth/**", "/api/comment/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/book/**").hasAuthority(RoleName.ADMIN.name())
                         .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
                         .anyRequest().authenticated()
                 )
