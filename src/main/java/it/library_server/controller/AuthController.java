@@ -7,15 +7,22 @@ import it.library_server.payload.LoginDto;
 import it.library_server.payload.RegisterDto;
 import it.library_server.repository.AuthRepository;
 import it.library_server.service.AuthService;
+import it.library_server.service.CustomOAuth2User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+import java.util.Collections;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -31,6 +38,17 @@ public class AuthController {
     public HttpEntity<?> login(@Valid @RequestBody LoginDto request) {
         return authService.login(request, authenticationManager);
     }
+    @GetMapping("/success")
+    public ResponseEntity<?> getUserInfo(@AuthenticationPrincipal OAuth2User principal) {
+        if (principal == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Foydalanuvchi autentifikatsiya qilinmagan");
+        }
+
+        System.out.println("OAuth2User attributes: " + principal.getAttributes());
+
+        return ResponseEntity.ok(principal.getAttributes()); // Barcha atributlarni JSON formatda qaytarish
+    }
+
 
 //    @PostMapping("/reset-password")
 //    public HttpEntity<?> resetPassword(@RequestBody ResetPasswordDto resetPasswordDto) {

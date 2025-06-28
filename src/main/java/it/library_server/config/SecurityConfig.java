@@ -1,9 +1,10 @@
 package it.library_server.config;
 
 import it.library_server.entity.enums.RoleName;
-import it.library_server.repository.RoleRepository;
 import it.library_server.security.JwtTokenFilter;
 import it.library_server.security.UserAuthenticationEntryPoint;
+import it.library_server.service.CustomOAuth2User;
+import it.library_server.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,6 +34,7 @@ public class SecurityConfig {
 
     private final JwtTokenFilter securityFilter;
     private final UserAuthenticationEntryPoint userAuthenticationEntryPoint;
+    private final CustomOAuth2UserService oAuth2UserService;
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
@@ -55,30 +57,22 @@ public class SecurityConfig {
     }
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, RoleRepository roleRepository) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(userAuthenticationEntryPoint))
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(
-                                "/swagger-ui/**",
-                                "/swagger-ui.html",
-                                "/v3/api-docs/**"
-                        ).permitAll()
-                        .requestMatchers("/api/auth/**", "/api/comment/**").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/book/**").hasAuthority(RoleName.ADMIN.name())
-                        .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
-                        .defaultSuccessUrl("/api/auth/google/success", true)
+                        .defaultSuccessUrl("/api/auth/success", true)
                 )
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .build();
     }
-
     @Bean
     AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
             throws Exception {
